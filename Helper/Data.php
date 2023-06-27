@@ -91,7 +91,7 @@ class Data extends AbstractHelper
     {
         $status = $this->getModuleGeneralConfig('order_status');
 
-        return $status ? : Order::STATE_PROCESSING;
+        return $status ?: Order::STATE_PROCESSING;
     }
 
     public function getBaseUrl()
@@ -108,10 +108,20 @@ class Data extends AbstractHelper
      */
     public static function sanitizeItemSku($code)
     {
-        return strtolower( preg_replace("[^a-zA-Z0-9-]", "-",
-            strtr(utf8_decode(trim(preg_replace('/[ -]+/' , '-' , $code))),
-                utf8_decode("áàãâéêíóôõúüñçÁÀÃÂÉÊÍÓÔÕÚÜÑÇ"),
-                "aaaaeeiooouuncAAAAEEIOOOUUNC-")));
+        $string = mb_convert_encoding(trim(preg_replace('/[ -]+/', '-', $code)), 'ISO-8859-1', 'UTF-8');
+        $from   = mb_convert_encoding("áàãâéêíóôõúüñçÁÀÃÂÉÊÍÓÔÕÚÜÑÇ", 'ISO-8859-1', 'UTF-8');
+
+        return strtolower(
+            preg_replace(
+                "[^a-zA-Z0-9-]",
+                "-",
+                strtr(
+                    $string,
+                    $from,
+                    "aaaaeeiooouuncAAAAEEIOOOUUNC-"
+                )
+            )
+        );
     }
 
     /**
