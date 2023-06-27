@@ -6,6 +6,12 @@ use \Magento\Config\Model\Config\CommentInterface;
 
 class WebhookKey implements CommentInterface
 {
+
+    /**
+     * @var \Magento\Framework\UrlInterface
+     */
+    protected $urlInterface;
+
     public function __construct(
         \Magento\Framework\UrlInterface $urlInterface
     ) {
