@@ -10,6 +10,18 @@ use Vindi\Payment\Helper\Api;
 
 class Customer
 {
+    /**
+     * @var CustomerRepositoryInterface
+     */
+    private $customerRepository;
+    /**
+     * @var Api
+     */
+    private $api;
+    /**
+     * @var ManagerInterface
+     */
+    private $messageManager;
 
     /**
      * @param CustomerRepositoryInterface $customerRepository
