@@ -20,6 +20,11 @@ class PaymentMethod
     private $api;
 
     /**
+     * @var bool
+     */
+    private $acceptBankSlip;
+
+    /**
      * @param Api $api
      */
     public function __construct(Api $api)
