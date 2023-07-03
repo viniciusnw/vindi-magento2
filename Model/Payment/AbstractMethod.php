@@ -95,6 +95,8 @@ abstract class AbstractMethod extends OriginAbstractMethod
      */
     private $subscriptionRepository;
 
+    protected $storeManager;
+
     /**
      * @param Context $context
      * @param Registry $registry
@@ -141,6 +143,7 @@ abstract class AbstractMethod extends OriginAbstractMethod
         \Vindi\Payment\Helper\Data $helperData,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
+        StoreManagerInterface $storeManager,
         array $data = []
     ) {
         parent::__construct(
@@ -240,6 +243,18 @@ abstract class AbstractMethod extends OriginAbstractMethod
         $this->processPayment($payment, $amount);
     }
 
+    protected function getEnvName()
+    {
+        $storeUrl  = $this->storeManager->getStore()->getBaseUrl();
+        $local_url = $this->helperData->getModuleGeneralConfig("local_url");
+        $dev_url   = $this->helperData->getModuleGeneralConfig("dev_url");
+        $stg_url   = $this->helperData->getModuleGeneralConfig("stg_url");
+
+        if (strpos($storeUrl, $local_url) !== false) return '/local';
+        if (strpos($storeUrl, $dev_url) !== false) return '/integration';
+        if (strpos($storeUrl, $stg_url) !== false) return '/staging';
+    }
+
     /**
      * @param \Magento\Framework\DataObject|InfoInterface $payment
      * @param float $amount
@@ -264,7 +279,7 @@ abstract class AbstractMethod extends OriginAbstractMethod
             'customer_id' => $customerId,
             'payment_method_code' => $this->getPaymentMethodCode(),
             'bill_items' => $productList,
-            'code' => $order->getIncrementId()
+            'code' => $order->getIncrementId() . $this->getEnvName(),
         ];
 
         if ($body['payment_method_code'] === PaymentMethod::CREDIT_CARD) {
@@ -416,7 +431,7 @@ abstract class AbstractMethod extends OriginAbstractMethod
             PaymentMethod::DEBIT_CARD
         ];
 
-        return in_array($paymentMethodCode , $paymentMethodsCode);
+        return in_array($paymentMethodCode, $paymentMethodsCode);
     }
 
     /**
