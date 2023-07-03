@@ -6,6 +6,12 @@ use Magento\Framework\App\ProductMetadata;
 
 class CsrfValidatorSkip
 {
+
+    /**
+     * @var ProductMetadata
+     */
+    private $productMetadata;
+
     public function __construct(ProductMetadata $productMetadata)
     {
         $this->productMetadata = $productMetadata;
