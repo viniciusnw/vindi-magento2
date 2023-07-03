@@ -57,7 +57,8 @@ class Subscription
      */
     public function created($data)
     {
-        if (!$order = $this->getOrder($data['subscription']['code'])) {
+        $code = explode("/", $data['subscription']['code'])[0];
+        if (!$order = $this->getOrder($code)) {
             return false;
         }
 
@@ -74,7 +75,8 @@ class Subscription
      */
     public function canceled($data)
     {
-        if (!$order = $this->getOrder($data['subscription']['code'])) {
+        $code = explode("/", $data['subscription']['code'])[0];
+        if (!$order = $this->getOrder($code)) {
             return false;
         }
 
@@ -92,7 +94,8 @@ class Subscription
      */
     public function reactivated($data)
     {
-        if (!$order = $this->getOrder($data['subscription']['code'])) {
+        $code = explode("/", $data['subscription']['code'])[0];
+        if (!$order = $this->getOrder($code)) {
             return false;
         }
 

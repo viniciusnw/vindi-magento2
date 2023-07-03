@@ -243,6 +243,9 @@ abstract class AbstractMethod extends OriginAbstractMethod
         $this->processPayment($payment, $amount);
     }
 
+    /**
+     * @return string
+     */
     protected function getEnvName()
     {
         $storeUrl  = $this->storeManager->getStore()->getBaseUrl();
@@ -251,8 +254,9 @@ abstract class AbstractMethod extends OriginAbstractMethod
         $stg_url   = $this->helperData->getModuleGeneralConfig("stg_url");
 
         if (strpos($storeUrl, $local_url) !== false) return '/local';
-        if (strpos($storeUrl, $dev_url) !== false) return '/integration';
-        if (strpos($storeUrl, $stg_url) !== false) return '/staging';
+        if (strpos($storeUrl, $dev_url)   !== false) return '/integration';
+        if (strpos($storeUrl, $stg_url)   !== false) return '/staging';
+        return '';
     }
 
     /**
@@ -325,7 +329,7 @@ abstract class AbstractMethod extends OriginAbstractMethod
             'payment_method_code' => $this->getPaymentMethodCode(),
             'plan_id' => $planId,
             'product_items' => $productItems,
-            'code' => $order->getIncrementId()
+            'code' => $order->getIncrementId() . $this->getEnvName()
         ];
 
         if ($body['payment_method_code'] === PaymentMethod::CREDIT_CARD) {

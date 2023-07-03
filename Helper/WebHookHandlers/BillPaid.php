@@ -68,9 +68,11 @@ class BillPaid
             && $data['bill']['subscription'] != null
         ) {
             $isSubscription = true;
-            $order = $this->getOrder($data['bill']['subscription']['code']);
+            $code = explode("/", $data['bill']['subscription']['code'])[0];
+            $order = $this->getOrder($code);
         } elseif (isset($data['bill']['code']) && $data['bill']['code'] != null) {
-            $order = $this->getOrder($data['bill']['code']);
+            $code = explode("/", $data['bill']['code'])[0];
+            $order = $this->getOrder($code);
         }
 
         if (!$order && !($order = $this->order->getOrder($data))) {
