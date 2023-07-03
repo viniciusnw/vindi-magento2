@@ -102,19 +102,19 @@
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="local_url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label"
+                <field id="local_url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="101" translate="label"
                        type="text">
                     <label>Local url</label>
                     <validate>required-entry</validate>
                 </field>
 
-                <field id="dev_url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="41" translate="label"
+                <field id="dev_url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="102" translate="label"
                        type="text">
                     <label>Development url</label>
                     <validate>required-entry</validate>
                 </field>
 
-                <field id="stg_url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="42" translate="label"
+                <field id="stg_url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="103" translate="label"
                        type="text">
                     <label>Staging url</label>
                     <validate>required-entry</validate>
