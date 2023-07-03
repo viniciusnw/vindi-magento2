@@ -12,7 +12,6 @@ class BillPaid
      * @var \Magento\Sales\Api\OrderRepositoryInterface
      */
     protected $orderRepository;
-
     /**
      * @var \Magento\Sales\Api\InvoiceRepositoryInterface
      */
@@ -21,6 +20,18 @@ class BillPaid
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
+    /**
+     * @var OrderInterface
+     */
+    private $order;
+    /**
+     * @var Data
+     */
+    private $helperData;
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
@@ -51,7 +62,8 @@ class BillPaid
         $order = null;
         $isSubscription = false;
 
-        if (array_key_exists('subscription', $data['bill'])
+        if (
+            array_key_exists('subscription', $data['bill'])
             && isset($data['bill']['subscription']['code'])
             && $data['bill']['subscription'] != null
         ) {
