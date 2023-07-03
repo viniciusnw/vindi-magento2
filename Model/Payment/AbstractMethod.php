@@ -143,7 +143,6 @@ abstract class AbstractMethod extends OriginAbstractMethod
         \Vindi\Payment\Helper\Data $helperData,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
-        StoreManagerInterface $storeManager,
         array $data = []
     ) {
         parent::__construct(
