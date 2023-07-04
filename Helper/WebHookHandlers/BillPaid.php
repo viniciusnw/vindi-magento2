@@ -153,7 +153,7 @@ class BillPaid
 
         try {
             return reset($orderList);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->error(__('Order #%1 not found', $incrementId));
             $this->logger->error($e->getMessage());
         }
