@@ -147,9 +147,9 @@ abstract class AbstractMethod extends OriginAbstractMethod
         LoggerInterface $psrLogger,
         TimezoneInterface $date,
         \Vindi\Payment\Helper\Data $helperData,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
         array $data = []
     ) {
         parent::__construct(
