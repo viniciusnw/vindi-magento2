@@ -130,11 +130,8 @@ class BillPaid
                 $this->helperData->getStatusToOrderComplete()
             );
         }
-
-
-        $this->orderRepository->save($order);
-
-        return true;
+        
+        return $this->orderRepository->save($order);
     }
 
     /**

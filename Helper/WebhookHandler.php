@@ -92,7 +92,7 @@ class WebhookHandler
             case 'bill_created':
                 return $this->billCreated->billCreated($data);
             case 'bill_paid':
-                return $this->billPaid->billPaid($data);
+                return (bool) $this->billPaid->billPaid($data);
             case 'charge_rejected':
                 return $this->chargeRejected->chargeRejected($data);
             case 'bill_canceled':
