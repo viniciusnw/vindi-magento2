@@ -95,7 +95,13 @@ abstract class AbstractMethod extends OriginAbstractMethod
      */
     private $subscriptionRepository;
 
-    protected $storeManager;
+    /**
+     * Store manager.
+     *
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $_storeManager;
+
 
     /**
      * @param Context $context
@@ -143,6 +149,7 @@ abstract class AbstractMethod extends OriginAbstractMethod
         \Vindi\Payment\Helper\Data $helperData,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
         array $data = []
     ) {
         parent::__construct(
@@ -158,6 +165,7 @@ abstract class AbstractMethod extends OriginAbstractMethod
             $data
         );
 
+        $this->_storeManager  = $storeManager;
         $this->api = $api;
         $this->invoiceService = $invoiceService;
         $this->customer = $customer;
@@ -247,7 +255,7 @@ abstract class AbstractMethod extends OriginAbstractMethod
      */
     protected function getEnvName()
     {
-        $storeUrl  = $this->storeManager->getStore()->getBaseUrl();
+        $storeUrl  = $this->_storeManager->getStore()->getBaseUrl();
         $local_url = $this->helperData->getModuleGeneralConfig("local_url");
         $dev_url   = $this->helperData->getModuleGeneralConfig("dev_url");
         $stg_url   = $this->helperData->getModuleGeneralConfig("stg_url");
