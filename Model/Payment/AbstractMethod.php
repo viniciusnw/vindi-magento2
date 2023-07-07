@@ -256,9 +256,9 @@ abstract class AbstractMethod extends OriginAbstractMethod
     protected function getEnvName()
     {
         $storeUrl  = $this->_storeManager->getStore()->getBaseUrl();
-        $local_url = $this->helperData->getModuleGeneralConfig("local_url") ?: "";
-        $dev_url   = $this->helperData->getModuleGeneralConfig("dev_url")   ?: "";
-        $stg_url   = $this->helperData->getModuleGeneralConfig("stg_url")   ?: "";
+        $local_url = $this->helperData->getModuleGeneralConfig("local_url") ?: "null";
+        $dev_url   = $this->helperData->getModuleGeneralConfig("dev_url")   ?: "null";
+        $stg_url   = $this->helperData->getModuleGeneralConfig("stg_url")   ?: "null";
 
         if (strpos($storeUrl, $local_url) !== false) return '/local';
         if (strpos($storeUrl, $dev_url)   !== false) return '/integration';
