@@ -2,7 +2,6 @@
 
 namespace Vindi\Payment\Controller\Index;
 
-use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
@@ -14,14 +13,10 @@ use Vindi\Payment\Helper\WebhookHandler;
  * Class Webhook
  * @package Vindi\Payment\Controller\Index
  */
-class Webhook extends Action
+class Webhook
 {
-    protected $_pageFactory;
+
     private $webhookHandler;
-    /**
-     * @var Api
-     */
-    private $api;
     /**
      * @var LoggerInterface
      */
@@ -30,6 +25,10 @@ class Webhook extends Action
      * @var Data
      */
     private $helperData;
+    /**
+     * @var \Magento\Framework\App\Request\Http
+     */
+    private $request;
 
     /**
      * Webhook constructor.
@@ -41,23 +40,21 @@ class Webhook extends Action
      * @param PageFactory $pageFactory
      */
     public function __construct(
-        Api $api,
         LoggerInterface $logger,
         WebhookHandler $webhookHandler,
         Data $helperData,
-        Context $context,
-        PageFactory $pageFactory
+        \Magento\Framework\App\Request\Http $request
     ) {
-        $this->api = $api;
+        $this->request = $request;
         $this->logger = $logger;
-        $this->_pageFactory = $pageFactory;
         $this->webhookHandler = $webhookHandler;
         $this->helperData = $helperData;
-        return parent::__construct($context);
     }
 
     /**
      * The route that webhooks will use.
+     * 
+     * @return bool
      */
     public function execute()
     {
@@ -68,13 +65,16 @@ class Webhook extends Action
             if (!$this->validateRequest()) {
                 $ip = $this->webhookHandler->getRemoteIp();
                 $this->logger->error(__(sprintf('Invalid webhook attempt from IP %s', $ip)));
-                return;
+                return false;
             }
 
             $this->webhookHandler->handle($body);
         } catch (\Throwable $th) {
             $this->logger->error(__(sprintf('Error on webhook: %s', $th->getMessage())));
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -85,7 +85,7 @@ class Webhook extends Action
     private function validateRequest()
     {
         $systemKey = $this->helperData->getWebhookKey();
-        $requestKey = $this->getRequest()->getParam('key');
+        $requestKey = $this->request->getParam('key');
 
         return $systemKey === $requestKey;
     }
