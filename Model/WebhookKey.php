@@ -23,10 +23,10 @@ class WebhookKey implements CommentInterface
         return sprintf(
             __("Use this link to set up events in Vindi Webhooks.")
         ) .
-        " <strong>" .
-        $this->urlInterface->getBaseUrl() .
-        "vindiPayment/index/webhook?key=" .
-        $elementValue .
-        "</strong>";
+            " <strong>" .
+            $this->urlInterface->getBaseUrl() .
+            "index.php/rest/all/V1/integration/vindi/webhook?key=" .
+            $elementValue .
+            "</strong>";
     }
 }
