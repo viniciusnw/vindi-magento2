@@ -5,6 +5,7 @@ namespace Vindi\Payment\Helper\WebHookHandlers;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order\Invoice;
 use Vindi\Payment\Helper\Data;
+use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 
 class BillPaid
 {
@@ -32,6 +33,10 @@ class BillPaid
      * @var Data
      */
     private $helperData;
+    /**
+     * @var InvoiceSender
+     */
+    private $invoiceSender;
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
@@ -39,6 +44,7 @@ class BillPaid
         \Magento\Sales\Api\InvoiceRepositoryInterface $invoiceRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         Order $order,
+        InvoiceSender $invoiceSender,
         Data $helperData
     ) {
         $this->logger = $logger;
@@ -47,6 +53,7 @@ class BillPaid
         $this->order = $order;
         $this->helperData = $helperData;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->invoiceSender = $invoiceSender;
     }
 
     /**
@@ -115,7 +122,8 @@ class BillPaid
         $invoice = $order->prepareInvoice();
         $invoice->setRequestedCaptureCase(Invoice::CAPTURE_OFFLINE);
         $invoice->register();
-        $invoice->setSendEmail(true);
+        // $invoice->setSendEmail(true);
+        $this->invoiceSender->send($invoice, true);
         $this->invoiceRepository->save($invoice);
         $this->logger->info(__('Invoice created with success'));
 
