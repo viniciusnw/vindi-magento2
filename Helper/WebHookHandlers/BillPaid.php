@@ -130,7 +130,7 @@ class BillPaid
         if ($isSubscription) {
             $order->addCommentToStatusHistory(
                 __('The payment was confirmed and the subscription is beeing processed')->getText(),
-                \Magento\Sales\Model\Order::STATE_PROCESSING
+                $this->helperData->getStatusToSubOrderComplete()
             );
         } else {
             $order->addCommentToStatusHistory(

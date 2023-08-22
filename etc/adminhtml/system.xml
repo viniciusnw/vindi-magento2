@@ -98,7 +98,13 @@
                 </field>
                 <field id="order_status" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="100"
                        translate="label" type="select">
-                    <label>New Order Status</label>
+                    <label>Complete Order Status</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                </field>
+
+                <field id="sub_order_status" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="100"
+                       translate="label" type="select">
+                    <label>Complete subscription Order Status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 

@@ -94,6 +94,13 @@ class Data extends AbstractHelper
         return $status ?: Order::STATE_PROCESSING;
     }
 
+    public function getStatusToSubOrderComplete()
+    {
+        $status = $this->getModuleGeneralConfig('sub_order_status');
+
+        return $status ?: Order::STATE_PROCESSING;
+    }
+
     public function getBaseUrl()
     {
         if ($this->getMode() == Mode::PRODUCTION_MODE) {
