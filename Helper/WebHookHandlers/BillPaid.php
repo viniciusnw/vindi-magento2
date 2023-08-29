@@ -6,6 +6,7 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order\Invoice;
 use Vindi\Payment\Helper\Data;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
+use Magento\Sales\Model\Config\Source\Order\Status;
 
 class BillPaid
 {
