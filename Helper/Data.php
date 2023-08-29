@@ -101,6 +101,11 @@ class Data extends AbstractHelper
         return $status ?: Order::STATE_PROCESSING;
     }
 
+    public function getCreateInvoiceOnComplete()
+    {
+        return $this->getModuleGeneralConfig('create_invoice_on_complete');
+    }
+
     public function getBaseUrl()
     {
         if ($this->getMode() == Mode::PRODUCTION_MODE) {

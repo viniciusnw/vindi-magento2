@@ -96,29 +96,36 @@
                     <comment model="Vindi\Payment\Model\WebhookKey"/>
                     <frontend_model>Vindi\Payment\Block\System\Config\Form\Field\Disable</frontend_model>
                 </field>
+
+                <field id="create_invoice_on_complete" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="99" translate="label"
+                       type="select">
+                    <label>Create Invoice on Complete</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="order_status" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="100"
                        translate="label" type="select">
                     <label>Complete Order Status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="sub_order_status" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="100"
+                <field id="sub_order_status" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="101"
                        translate="label" type="select">
                     <label>Complete subscription Order Status</label>
                     <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
                 </field>
 
-                <field id="local_url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="101" translate="label"
+                <field id="local_url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="102" translate="label"
                        type="text">
                     <label>Local url</label>
                 </field>
 
-                <field id="dev_url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="102" translate="label"
+                <field id="dev_url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="103" translate="label"
                        type="text">
                     <label>Development url</label>
                 </field>
 
-                <field id="stg_url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="103" translate="label"
+                <field id="stg_url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="104" translate="label"
                        type="text">
                     <label>Staging url</label>
                 </field>

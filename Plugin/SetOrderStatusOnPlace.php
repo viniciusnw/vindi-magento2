@@ -6,6 +6,7 @@ use Magento\Sales\Model\Order\Payment;
 use Vindi\Payment\Helper\Data;
 use Vindi\Payment\Model\Payment\BankSlip;
 use Vindi\Payment\Model\Payment\Vindi;
+use Magento\Sales\Model\Order;
 
 class SetOrderStatusOnPlace
 {
@@ -34,29 +35,18 @@ class SetOrderStatusOnPlace
      */
     public function afterPlace(Payment $subject, $result)
     {
-        $this->pendingStatus($subject);
+        $this->processingStatus($subject);
         return $result;
     }
 
     /**
      * @param Payment $subject
      */
-    private function pendingStatus(Payment $subject)
+    private function processingStatus(Payment $subject)
     {
         $order = $subject->getOrder();
-        $order->setState('new')
-            ->setStatus('pending');
-    }
-
-    /**
-     * @param Payment $subject
-     */
-    private function completeStatus(Payment $subject)
-    {
-        $order = $subject->getOrder();
-        $order->setState('new')
-            ->setStatus($this->helperData->getStatusToOrderComplete())
-            ->addCommentToStatusHistory(__('The payment was confirmed and the order is beeing processed'))
-            ;
+        $order->setState(Order::STATE_PROCESSING)
+            ->setStatus(Order::STATE_PROCESSING)
+            ->addCommentToStatusHistory(__('The payment has not yet been confirmed and the order is being processed.'));
     }
 }

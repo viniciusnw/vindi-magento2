@@ -105,40 +105,35 @@ class BillPaid
      */
     public function createInvoice(\Magento\Sales\Model\Order $order, $isSubscription = false)
     {
-        if (!$order->getId()) {
-            return false;
-        }
+        if (!$order->getId()) return false;
 
         $this->logger->info(__(sprintf('Generating invoice for the order %s.', $order->getId())));
 
-        if (!$isSubscription) {
+        if (!$isSubscription)
             if (!$order->canInvoice()) {
                 $this->logger->error(__(sprintf('Impossible to generate invoice for order %s.', $order->getId())));
-
                 return false;
             }
+
+        if ($this->helperData->getCreateInvoiceOnComplete()) {
+            $invoice = $order->prepareInvoice();
+            $invoice->setRequestedCaptureCase(Invoice::CAPTURE_OFFLINE);
+            $invoice->register();
+            // $invoice->setSendEmail(true);
+            $this->invoiceSender->send($invoice, true);
+            $this->invoiceRepository->save($invoice);
+            $this->logger->info(__('Invoice created with success'));
         }
 
-        $invoice = $order->prepareInvoice();
-        $invoice->setRequestedCaptureCase(Invoice::CAPTURE_OFFLINE);
-        $invoice->register();
-        // $invoice->setSendEmail(true);
-        $this->invoiceSender->send($invoice, true);
-        $this->invoiceRepository->save($invoice);
-        $this->logger->info(__('Invoice created with success'));
+        if ($isSubscription) $order->addCommentToStatusHistory(
+            __('The payment was confirmed.')->getText(),
+            $this->helperData->getStatusToSubOrderComplete()
+        );
+        else $order->addCommentToStatusHistory(
+            __('The payment was confirmed.')->getText(),
+            $this->helperData->getStatusToOrderComplete()
+        );
 
-        if ($isSubscription) {
-            $order->addCommentToStatusHistory(
-                __('The payment was confirmed and the subscription is beeing processed')->getText(),
-                $this->helperData->getStatusToSubOrderComplete()
-            );
-        } else {
-            $order->addCommentToStatusHistory(
-                __('The payment was confirmed and the order is beeing processed')->getText(),
-                $this->helperData->getStatusToOrderComplete()
-            );
-        }
-        
         return $this->orderRepository->save($order);
     }
 
