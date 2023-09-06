@@ -251,22 +251,6 @@ abstract class AbstractMethod extends OriginAbstractMethod
     }
 
     /**
-     * @return string
-     */
-    protected function getEnvName()
-    {
-        $storeUrl  = $this->_storeManager->getStore()->getBaseUrl();
-        $local_url = $this->helperData->getModuleGeneralConfig("local_url") ?: "null";
-        $dev_url   = $this->helperData->getModuleGeneralConfig("dev_url")   ?: "null";
-        $stg_url   = $this->helperData->getModuleGeneralConfig("stg_url")   ?: "null";
-
-        if (strpos($storeUrl, $local_url) !== false) return '/local';
-        if (strpos($storeUrl, $dev_url)   !== false) return '/integration';
-        if (strpos($storeUrl, $stg_url)   !== false) return '/staging';
-        return '';
-    }
-
-    /**
      * @param \Magento\Framework\DataObject|InfoInterface $payment
      * @param float $amount
      *
@@ -290,7 +274,7 @@ abstract class AbstractMethod extends OriginAbstractMethod
             'customer_id' => $customerId,
             'payment_method_code' => $this->getPaymentMethodCode(),
             'bill_items' => $productList,
-            'code' => $order->getIncrementId() . $this->getEnvName(),
+            'code' => $order->getIncrementId() . '/' . time()
         ];
 
         if ($body['payment_method_code'] === PaymentMethod::CREDIT_CARD) {
