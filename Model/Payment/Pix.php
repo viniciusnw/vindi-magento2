@@ -4,6 +4,7 @@ namespace Vindi\Payment\Model\Payment;
 
 
 use Magento\Framework\DataObject;
+use Magento\Quote\Api\Data\PaymentInterface;
 use Vindi\Payment\Block\Info\Pix as InfoBlock;
 
 /**
@@ -94,8 +95,19 @@ class Pix extends AbstractMethod
      */
     public function assignData(DataObject $data)
     {
+
+        $additionalData = $data->getData(PaymentInterface::KEY_ADDITIONAL_DATA);
+
+        if (!is_object($additionalData)) $additionalData = new DataObject($additionalData ?: []);
+
         $info = $this->getInfoInstance();
         $info->setAdditionalInformation('installments', 1);
+
+        if ($additionalData->getAgreementIds())
+            $info->setAdditionalInformation(
+                'agreement_ids',
+                $additionalData->getAgreementIds()
+            );
         $info->save();
 
         parent::assignData($data);
