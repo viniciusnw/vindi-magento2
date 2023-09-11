@@ -7,6 +7,7 @@ use Magento\Sales\Model\Order\Invoice;
 use Vindi\Payment\Helper\Data;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\Config\Source\Order\Status;
+use Magento\Sales\Model\Order\Email\Sender\OrderSender;
 
 class BillPaid
 {
@@ -38,6 +39,10 @@ class BillPaid
      * @var InvoiceSender
      */
     private $invoiceSender;
+    /**
+     * @var OrderSender
+     */
+    private $orderSender;
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
@@ -46,7 +51,8 @@ class BillPaid
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         Order $order,
         InvoiceSender $invoiceSender,
-        Data $helperData
+        Data $helperData,
+        OrderSender $orderSender
     ) {
         $this->logger = $logger;
         $this->orderRepository = $orderRepository;
@@ -55,6 +61,7 @@ class BillPaid
         $this->helperData = $helperData;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->invoiceSender = $invoiceSender;
+        $this->orderSender = $orderSender;
     }
 
     /**
@@ -134,7 +141,8 @@ class BillPaid
             __('The payment was confirmed.')->getText(),
             $this->helperData->getStatusToOrderComplete()
         );
-
+        
+        if (!$this->helperData->getCreateInvoiceOnComplete()) $this->orderSender->send($order);
         return $this->orderRepository->save($order);
     }
 
